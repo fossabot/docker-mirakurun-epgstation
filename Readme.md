@@ -5,8 +5,7 @@
 ## 前提条件
 
 - Docker, docker-compose の導入が必須
-- ホスト上の pcscd は停止する
-- チューナーのドライバが適切にインストールされていること
+- Mirakurunは別ホストで稼働
 
 ## インストール手順
 
@@ -18,10 +17,6 @@ $ cp epgstation/config/config.sample.yml epgstation/config/config.yml
 $ cp epgstation/config/operatorLogConfig.sample.yml epgstation/config/operatorLogConfig.yml
 $ cp epgstation/config/epgUpdaterLogConfig.sample.yml epgstation/config/epgUpdaterLogConfig.yml
 $ cp epgstation/config/serviceLogConfig.sample.yml epgstation/config/serviceLogConfig.yml
-$ docker-compose run --rm -e SETUP=true mirakurun
-
-#チャンネル設定
-$ vim mirakurun/conf/channels.yml
 
 #コメントアウトされている restart や user の設定を適宜変更する
 $ vim docker-compose.yml
@@ -53,10 +48,6 @@ $ sudo docker-compose up -d
 ```
 
 ## 設定
-
-### Mirakurun
-
-* ポート番号: 40772
 
 ### EPGStation
 

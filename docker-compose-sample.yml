@@ -1,27 +1,5 @@
 version: '3.7'
 services:
-    mirakurun:
-        image: chinachu/mirakurun
-        cap_add:
-            - SYS_ADMIN
-            - SYS_NICE
-        ports:
-            - "40772:40772"
-            - "9229:9229"
-        volumes:
-            - ./mirakurun/conf:/app-config
-            - ./mirakurun/data:/app-data
-        environment:
-            TZ: "Asia/Tokyo"
-        devices:
-            - /dev/bus:/dev/bus
-            - /dev/dvb:/dev/dvb
-        restart: always
-        logging:
-            driver: json-file
-            options:
-                max-file: "1"
-                max-size: 10m
 
     mysql:
         image: mariadb:10.4
@@ -52,12 +30,11 @@ services:
         environment:
             TZ: "Asia/Tokyo"
         depends_on:
-            - mirakurun
             - mysql
         ports:
             - "8888:8888"
             - "8889:8889"
-        #user: "1000:1000"
+        user: "1000:1000"
         restart: always
 
 volumes:
