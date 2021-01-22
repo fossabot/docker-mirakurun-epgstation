@@ -6,18 +6,18 @@ ARG NASM_VER="2.14"
 ARG YASM_VER="1.3.0"
 ARG LAME_VER="3.100"
 
-RUN apt update && \
-    apt -y install $DEV && \
-    apt -y install yasm libx264-dev libmp3lame-dev libopus-dev libvpx-dev && \
-    apt -y install libx265-dev libnuma-dev && \
-    apt -y install libasound2 libass9 libvdpau1 libva-x11-2 libva-drm2 libxcb-shm0 libxcb-xfixes0 libxcb-shape0 libvorbisenc2 libtheora0 && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv BA9EF27F &&\
+RUN apt-get update && \
+    apt-get -y install $DEV && \
+    apt-get -y install yasm libx264-dev libmp3lame-dev libopus-dev libvpx-dev && \
+    apt-get -y install libx265-dev libnuma-dev && \
+    apt-get -y install libasound2 libass9 libvdpau1 libva-x11-2 libva-drm2 libxcb-shm0 libxcb-xfixes0 libxcb-shape0 libvorbisenc2 libtheora0 && \
+    apt-get-key adv --keyserver keyserver.ubuntu.com --recv BA9EF27F &&\
     echo 'deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu bionic main' \
-        | tee /etc/apt/sources.list.d/ubuntu-toolchain-r-ubuntu-test-bionic.list && \
+        | tee /etc/apt-get/sources.list.d/ubuntu-toolchain-r-ubuntu-test-bionic.list && \
     echo 'deb http://deb.debian.org/debian buster-backports main' \
-       | tee /etc/apt/sources.list.d/debian-buster-backports.list && \
-    apt update && \
-    apt install -y \
+       | tee /etc/apt-get/sources.list.d/debian-buster-backports.list && \
+    apt-get update && \
+    apt-get install -y \
         wget build-essential automake autoconf git libtool libvorbis-dev \
         libass-dev libfreetype6-dev libsdl2-dev libva-dev libvdpau-dev \
         libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev \
@@ -187,9 +187,9 @@ RUN set -xe && \
     DIR=/tmp/ffmpeg && \
     mkdir -p ${DIR} && \
     cd ${DIR} && \
-    sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list && \
-    apt update && \
-    apt -y build-dep ffmpeg && \
+    sed -Ei 's/^# deb-src /deb-src /' /etc/apt-get/sources.list && \
+    apt-get update && \
+    apt-get -y build-dep ffmpeg && \
     git clone --depth 1 git://git.ffmpeg.org/ffmpeg.git && \
     cd ffmpeg && \
     ./configure \
@@ -247,7 +247,7 @@ RUN set -xe && \
 
 # install nodejs
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
-    apt install -y nodejs
+    apt-get install -y nodejs
 
 # install EPGStation
 RUN cd /usr/local/ && \
@@ -262,9 +262,9 @@ RUN cd /usr/local/ && \
 ADD JoinLogoScpTrialSetLinux/modules /tmp/modules
 RUN set -xe && \
     DIR=/tmp/modules && \
-    cd /tmp/modules/chapter_exe/src && \
+    cd /tmp/modules/chapt-geter_exe/src && \
     make && \
-    mv chapter_exe /tmp/modules/join_logo_scp_trial/bin/ && \
+    mv chapt-geter_exe /tmp/modules/join_logo_scp_trial/bin/ && \
     cd /tmp/modules/logoframe/src && \
     make && \
     mv logoframe /tmp/modules/join_logo_scp_trial/bin/ && \
