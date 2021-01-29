@@ -5,7 +5,6 @@ ENV DEV="make gcc git g++ automake curl wget autoconf build-essential libass-dev
 ARG NASM_VER="2.14"
 ARG YASM_VER="1.3.0"
 ARG LAME_VER="3.100"
-ENV DEBIAN_FRONTEND=noninteractive
 ENV NODE_VERSION=14
 ENV EPGSTATION_VERSION=v2.0.8
 
@@ -16,9 +15,9 @@ RUN apt-get update && \
     apt-get -y install libasound2 libass9 libvdpau1 libva-x11-2 libva-drm2 libxcb-shm0 libxcb-xfixes0 libxcb-shape0 libvorbisenc2 libtheora0 && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv BA9EF27F &&\
     echo 'deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu bionic main' \
-        | tee /etc/apt-get/sources.list.d/ubuntu-toolchain-r-ubuntu-test-bionic.list && \
+        | tee /etc/apt/sources.list.d/ubuntu-toolchain-r-ubuntu-test-bionic.list && \
     echo 'deb http://deb.debian.org/debian buster-backports main' \
-       | tee /etc/apt-get/sources.list.d/debian-buster-backports.list && \
+        | tee /etc/apt/sources.list.d/debian-buster-backports.list && \
     apt-get update && \
     apt-get install -y \
         wget build-essential automake autoconf git libtool libvorbis-dev \
@@ -273,6 +272,11 @@ RUN set -xe && \
     npm link && \
     jlse --help
 
+# EPGStation clone
+RUN set -xe && \
+    cd /tmp && \
+    git clone https://github.com/l3tnun/EPGStation.git -b ${EPGSTATION_VERSION}
+
 FROM ghcr.io/tobitti0/docker-avisynthplus:4.3.1-ubuntu2004 as release
 ENV        DEBIAN_FRONTEND=noninteractive
 MAINTAINER  Tobitti <mail@tobitti.net>
@@ -290,3 +294,14 @@ RUN bash setup_node.x && \
     npm install && \
     npm link && \
     jlse --help
+
+# install EPGStation
+RUN cd /app && \
+    npm install && \
+    npm install async && \
+    npm run all-install && \
+    npm run build
+
+WORKDIR /app
+ENTRYPOINT ["npm"]
+CMD ["start"]
