@@ -11,7 +11,7 @@ RUN apt-get update && \
     apt-get -y install yasm libx264-dev libmp3lame-dev libopus-dev libvpx-dev && \
     apt-get -y install libx265-dev libnuma-dev && \
     apt-get -y install libasound2 libass9 libvdpau1 libva-x11-2 libva-drm2 libxcb-shm0 libxcb-xfixes0 libxcb-shape0 libvorbisenc2 libtheora0 && \
-    apt-get-key adv --keyserver keyserver.ubuntu.com --recv BA9EF27F &&\
+    apt-key adv --keyserver keyserver.ubuntu.com --recv BA9EF27F &&\
     echo 'deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu bionic main' \
         | tee /etc/apt-get/sources.list.d/ubuntu-toolchain-r-ubuntu-test-bionic.list && \
     echo 'deb http://deb.debian.org/debian buster-backports main' \
