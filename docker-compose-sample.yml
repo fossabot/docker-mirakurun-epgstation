@@ -27,6 +27,11 @@ services:
             - ./epgstation/thumbnail:/app/thumbnail
             - ./epgstation/logs:/app/logs
             - ./recorded:/app/recorded
+            - ./join_logo_scp_trial/JL:/join_logo_scp_trial/JL
+            - ./join_logo_scp_trial/logo:/join_logo_scp_trial/logo
+            - ./join_logo_scp_trial/result:/join_logo_scp_trial/result
+            - ./join_logo_scp_trial/setting:/join_logo_scp_trial/setting
+            - ./join_logo_scp_trial/src:/join_logo_scp_trial/src
         environment:
             TZ: "Asia/Tokyo"
         depends_on:

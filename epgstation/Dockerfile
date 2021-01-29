@@ -5,6 +5,9 @@ ENV DEV="make gcc git g++ automake curl wget autoconf build-essential libass-dev
 ARG NASM_VER="2.14"
 ARG YASM_VER="1.3.0"
 ARG LAME_VER="3.100"
+ENV DEBIAN_FRONTEND=noninteractive
+ENV NODE_VERSION=14
+ENV EPGSTATION_VERSION=v2.0.8
 
 RUN apt-get update && \
     apt-get -y install $DEV && \
@@ -245,18 +248,10 @@ RUN set -xe && \
     rm -rf ${DIR} && \
     ldconfig
 
-# install nodejs
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
-    apt-get install -y nodejs
-
-# install EPGStation
-RUN cd /usr/local/ && \
-    git clone https://github.com/l3tnun/EPGStation.git && \
-    cd /usr/local/EPGStation && \
-    npm install && \
-    npm install googleapis@39 --save && \
-    npm install async && \
-    npm run build
+# node setup tool
+RUN set -xe && \
+    curl -O -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x && \
+    mv setup_${NODE_VERSION}.x /join_logo_scp_trial/setup_node.x
 
 # join logo scp trial for Linux
 ADD JoinLogoScpTrialSetLinux/modules /tmp/modules
@@ -278,7 +273,20 @@ RUN set -xe && \
     npm link && \
     jlse --help
 
-WORKDIR /usr/local/EPGStation
+FROM ghcr.io/tobitti0/docker-avisynthplus:4.3.1-ubuntu2004 as release
+ENV        DEBIAN_FRONTEND=noninteractive
+MAINTAINER  Tobitti <mail@tobitti.net>
+COPY --from=build /join_logo_scp_trial /join_logo_scp_trial
+COPY --from=build /tmp/EPGStation /app
 
-ENTRYPOINT npm start
-
+WORKDIR /join_logo_scp_trial
+RUN bash setup_node.x && \
+    apt-get update && \
+    apt-get install --no-install-recommends -y nodejs libboost-filesystem-dev libboost-program-options-dev libboost-system-dev && \
+    node -v && \
+    npm --version &&\
+    mv libdelogo.so /usr/local/lib/avisynth && \
+    ls /usr/local/lib/avisynth && \
+    npm install && \
+    npm link && \
+    jlse --help
