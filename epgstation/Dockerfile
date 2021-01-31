@@ -133,7 +133,7 @@ RUN \
         curl -sL https://versaweb.dl.sourceforge.net/project/opencore-amr/opencore-amr/opencore-amr-${OPENCOREAMR_VERSION}.tar.gz | \
         tar -zx --strip-components=1 && \
         ./configure --prefix="${PREFIX}" --enable-shared  && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 # l-smash
@@ -147,7 +147,7 @@ RUN     set -xe && \
           --prefix="${PREFIX}" \
           --enable-shared \
           && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 ## x264 http://www.videolan.org/developers/x264.html
@@ -158,7 +158,7 @@ RUN \
         curl -sL https://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
         tar -jx --strip-components=1 && \
         ./configure --prefix="${PREFIX}" --enable-shared --enable-pic && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 ### x265 http://x265.org/
@@ -183,7 +183,7 @@ RUN \
         echo ${OGG_SHA256SUM} | sha256sum --check && \
         tar -zx --strip-components=1 -f libogg-${OGG_VERSION}.tar.gz && \
         ./configure --prefix="${PREFIX}" --enable-shared  && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 ### libopus https://www.opus-codec.org/
@@ -196,7 +196,7 @@ RUN \
         tar -zx --strip-components=1 -f opus-${OPUS_VERSION}.tar.gz && \
         autoreconf -fiv && \
         ./configure --prefix="${PREFIX}" --enable-shared && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 ### libvorbis https://xiph.org/vorbis/
@@ -208,7 +208,7 @@ RUN \
         echo ${VORBIS_SHA256SUM} | sha256sum --check && \
         tar -zx --strip-components=1 -f libvorbis-${VORBIS_VERSION}.tar.gz && \
         ./configure --prefix="${PREFIX}" --with-ogg="${PREFIX}" --enable-shared && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 ### libtheora http://www.theora.org/
@@ -220,7 +220,7 @@ RUN \
         echo ${THEORA_SHA256SUM} | sha256sum --check && \
         tar -zx --strip-components=1 -f libtheora-${THEORA_VERSION}.tar.gz && \
         ./configure --prefix="${PREFIX}" --with-ogg="${PREFIX}" --enable-shared && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 ### libvpx https://www.webmproject.org/code/
@@ -232,7 +232,7 @@ RUN \
         tar -zx --strip-components=1 && \
         ./configure --prefix="${PREFIX}" --enable-vp8 --enable-vp9 --enable-vp9-highbitdepth --enable-pic --enable-shared \
         --disable-debug --disable-examples --disable-docs --disable-install-bins  && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 ### libwebp https://developers.google.com/speed/webp/
@@ -243,7 +243,7 @@ RUN \
         curl -sL https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-${WEBP_VERSION}.tar.gz | \
         tar -zx --strip-components=1 && \
         ./configure --prefix="${PREFIX}" --enable-shared  && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 ### libmp3lame http://lame.sourceforge.net/
@@ -254,7 +254,7 @@ RUN \
         curl -sL https://versaweb.dl.sourceforge.net/project/lame/lame/$(echo ${LAME_VERSION} | sed -e 's/[^0-9]*\([0-9]*\)[.]\([0-9]*\)[.]\([0-9]*\)\([0-9A-Za-z-]*\)/\1.\2/')/lame-${LAME_VERSION}.tar.gz | \
         tar -zx --strip-components=1 && \
         ./configure --prefix="${PREFIX}" --bindir="${PREFIX}/bin" --enable-shared --enable-nasm --disable-frontend && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 ### xvid https://www.xvid.com/
@@ -267,7 +267,7 @@ RUN \
         tar -zx -f xvidcore-${XVID_VERSION}.tar.gz && \
         cd xvidcore/build/generic && \
         ./configure --prefix="${PREFIX}" --bindir="${PREFIX}/bin" && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 ### fdk-aac https://github.com/mstorsjo/fdk-aac
@@ -279,7 +279,7 @@ RUN \
         tar -zx --strip-components=1 && \
         autoreconf -fiv && \
         ./configure --prefix="${PREFIX}" --enable-shared --datadir="${DIR}" && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 ## openjpeg https://github.com/uclouvain/openjpeg
@@ -290,7 +290,7 @@ RUN \
         curl -sL https://github.com/uclouvain/openjpeg/archive/v${OPENJPEG_VERSION}.tar.gz | \
         tar -zx --strip-components=1 && \
         cmake -DBUILD_THIRDPARTY:BOOL=ON -DCMAKE_INSTALL_PREFIX="${PREFIX}" . && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 ## freetype https://www.freetype.org/
@@ -302,7 +302,7 @@ RUN  \
         echo ${FREETYPE_SHA256SUM} | sha256sum --check && \
         tar -zx --strip-components=1 -f freetype-${FREETYPE_VERSION}.tar.gz && \
         ./configure --prefix="${PREFIX}" --disable-static --enable-shared && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 ## libvstab https://github.com/georgmartius/vid.stab
@@ -314,7 +314,7 @@ RUN  \
         echo ${LIBVIDSTAB_SHA256SUM} | sha256sum --check &&  \
         tar -zx --strip-components=1 -f v${LIBVIDSTAB_VERSION}.tar.gz && \
         cmake -DCMAKE_INSTALL_PREFIX="${PREFIX}" . && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 ## fridibi https://www.fribidi.org/
@@ -339,7 +339,7 @@ RUN  \
         curl -sLO https://www.freedesktop.org/software/fontconfig/release/fontconfig-${FONTCONFIG_VERSION}.tar.bz2 && \
         tar -jx --strip-components=1 -f fontconfig-${FONTCONFIG_VERSION}.tar.bz2 && \
         ./configure --prefix="${PREFIX}" --disable-static --enable-shared && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 ## libass https://github.com/libass/libass
@@ -352,7 +352,7 @@ RUN  \
         tar -zx --strip-components=1 -f ${LIBASS_VERSION}.tar.gz && \
         ./autogen.sh && \
         ./configure --prefix="${PREFIX}" --disable-static --enable-shared && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 ## kvazaar https://github.com/ultravideo/kvazaar
@@ -364,7 +364,7 @@ RUN \
         tar -zx --strip-components=1 -f v${KVAZAAR_VERSION}.tar.gz && \
         ./autogen.sh && \
         ./configure --prefix="${PREFIX}" --disable-static --enable-shared && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 
@@ -388,7 +388,7 @@ RUN \
         curl -sLO https://www.x.org/archive//individual/util/util-macros-${XORG_MACROS_VERSION}.tar.gz && \
         tar -zx --strip-components=1 -f util-macros-${XORG_MACROS_VERSION}.tar.gz && \
         ./configure --srcdir=${DIR} --prefix="${PREFIX}" && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 
@@ -399,7 +399,7 @@ RUN \
         curl -sLO https://www.x.org/archive/individual/proto/xproto-${XPROTO_VERSION}.tar.gz && \
         tar -zx --strip-components=1 -f xproto-${XPROTO_VERSION}.tar.gz && \
         ./configure --srcdir=${DIR} --prefix="${PREFIX}" && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 
@@ -410,7 +410,7 @@ RUN \
         curl -sLO https://www.x.org/archive/individual/lib/libXau-${XAU_VERSION}.tar.gz && \
         tar -zx --strip-components=1 -f libXau-${XAU_VERSION}.tar.gz && \
         ./configure --srcdir=${DIR} --prefix="${PREFIX}" && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 
@@ -421,7 +421,7 @@ RUN \
         curl -sLO https://xcb.freedesktop.org/dist/libpthread-stubs-${LIBPTHREAD_STUBS_VERSION}.tar.gz && \
         tar -zx --strip-components=1 -f libpthread-stubs-${LIBPTHREAD_STUBS_VERSION}.tar.gz && \
         ./configure --prefix="${PREFIX}" && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 
@@ -433,7 +433,7 @@ RUN \
         tar -zx --strip-components=1 -f xcb-proto-${XCBPROTO_VERSION}.tar.gz && \
         ACLOCAL_PATH="${PREFIX}/share/aclocal" ./autogen.sh && \
         ./configure --prefix="${PREFIX}" && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 
@@ -445,7 +445,7 @@ RUN \
         tar -zx --strip-components=1 -f libxcb-${LIBXCB_VERSION}.tar.gz && \
         ACLOCAL_PATH="${PREFIX}/share/aclocal" ./autogen.sh && \
         ./configure --prefix="${PREFIX}" --disable-static --enable-shared && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 
@@ -458,7 +458,7 @@ RUN \
         echo ${LIBXML2_SHA256SUM} | sha256sum --check && \
         tar -xz --strip-components=1 -f libxml2-v${LIBXML2_VERSION}.tar.gz && \
         ./autogen.sh --prefix="${PREFIX}" --with-ftp=no --with-http=no --with-python=no && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 
@@ -471,7 +471,7 @@ RUN \
         echo ${LIBBLURAY_SHA256SUM} | sha256sum --check && \
         tar -jx --strip-components=1 -f libbluray-${LIBBLURAY_VERSION}.tar.bz2 && \
         ./configure --prefix="${PREFIX}" --disable-examples --disable-bdjava-jar --disable-static --enable-shared && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 
@@ -485,7 +485,7 @@ RUN \
         tar -xz --strip-components=1 -f v${LIBZMQ_VERSION}.tar.gz && \
         ./autogen.sh && \
         ./configure --prefix="${PREFIX}" && \
-        make && \
+        make -j$(nproc) && \
         make check && \
         make install && \
         rm -rf ${DIR}
@@ -499,7 +499,7 @@ RUN \
         curl -sLO https://github.com/Haivision/srt/archive/v${LIBSRT_VERSION}.tar.gz && \
         tar -xz --strip-components=1 -f v${LIBSRT_VERSION}.tar.gz && \
         cmake -DCMAKE_INSTALL_PREFIX="${PREFIX}" . && \
-        make && \
+        make  -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 
@@ -525,7 +525,7 @@ RUN \
         tar -xz --strip-components=1 -f v${LIBARIBB24_VERSION}.tar.gz && \
         autoreconf -fiv && \
         ./configure CFLAGS="-I${PREFIX}/include -fPIC" --prefix="${PREFIX}" && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         rm -rf ${DIR}
 
@@ -595,7 +595,7 @@ RUN \
         --enable-libmfx \
         --extra-cflags="-I${PREFIX}/include" \
         --extra-ldflags="-L${PREFIX}/lib" && \
-        make && \
+        make -j$(nproc) && \
         make install && \
         make tools/zmqsend && cp tools/zmqsend ${PREFIX}/bin/ && \
         make distclean && \
@@ -641,19 +641,19 @@ RUN cd /tmp/ && \
     cd /tmp/JoinLogoScpTrialSetLinux && \
     git submodule foreach git pull origin master && \
     cd /tmp/JoinLogoScpTrialSetLinux/modules/chapter_exe/src && \
-    make && \
+    make -j$(nproc) && \
     mv chapter_exe /tmp/JoinLogoScpTrialSetLinux/modules/join_logo_scp_trial/bin/ && \
     cd /tmp/JoinLogoScpTrialSetLinux/modules/logoframe/src && \
-    make && \
+    make -j$(nproc) && \
     mv logoframe /tmp/JoinLogoScpTrialSetLinux/modules/join_logo_scp_trial/bin/ && \
     cd /tmp/JoinLogoScpTrialSetLinux/modules/join_logo_scp/src && \
-    make && \
+    make -j$(nproc) && \
     mv join_logo_scp /tmp/JoinLogoScpTrialSetLinux/modules/join_logo_scp_trial/bin/ && \
     cd /tmp/JoinLogoScpTrialSetLinux/modules/tsdivider/ && \
     mkdir build && \
     cd build && \
     cmake -DCMAKE_BUILD_TYPE=Release .. && \
-    make && \
+    make -j$(nproc) && \
     mv tsdivider /tmp/JoinLogoScpTrialSetLinux/modules/join_logo_scp_trial/bin/ && \
     mv /tmp/JoinLogoScpTrialSetLinux/modules/join_logo_scp_trial /join_logo_scp_trial && \
     cd /join_logo_scp_trial
@@ -662,7 +662,7 @@ RUN cd /tmp/ && \
 RUN set -xe && \
     git clone https://github.com/tobitti0/delogo-AviSynthPlus-Linux && \
     cd delogo-AviSynthPlus-Linux/src && \
-    make && \
+    make -j$(nproc) && \
     cp libdelogo.so /join_logo_scp_trial
 
 # node setup tool
@@ -675,6 +675,9 @@ RUN set -xe && \
     cd /tmp && \
     git clone https://github.com/l3tnun/EPGStation.git -b ${EPGSTATION_VERSION}
 
+FROM ghcr.io/tobitti0/docker-avisynthplus:4.3.1-ubuntu2004 as release
+ENV        DEBIAN_FRONTEND=noninteractive
+MAINTAINER  Tobitti <mail@tobitti.net>
 COPY --from=build /join_logo_scp_trial /join_logo_scp_trial
 COPY --from=build /tmp/EPGStation /app
 
