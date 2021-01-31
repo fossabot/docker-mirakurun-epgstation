@@ -630,6 +630,11 @@ RUN     set -xe && \
         ninja install && \
         rm -rf ${DIR}
 
+RUN set -xe && \
+    apt-get update && \
+    apt-get install --no-install-recommends -y \
+      curl git make gcc g++ cmake libboost-all-dev
+
 # join_logo_scp_trial build
 RUN cd /tmp/ && \
     git clone --recursive https://github.com/tobitti0/JoinLogoScpTrialSetLinux.git && \
