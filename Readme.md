@@ -1,4 +1,6 @@
 # docker-mirakurun-epgstation
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmultiverse2011%2Fdocker-mirakurun-epgstation.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmultiverse2011%2Fdocker-mirakurun-epgstation?ref=badge_shield)
+
 
 [Mirakurun](https://github.com/Chinachu/Mirakurun) + [EPGStation](https://github.com/l3tnun/EPGStation) の Docker コンテナ
 
@@ -79,3 +81,7 @@ $ sudo docker-compose up -d
 ## v1からの移行について
 
 [docs/migration.md](docs/migration.md)を参照
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmultiverse2011%2Fdocker-mirakurun-epgstation.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmultiverse2011%2Fdocker-mirakurun-epgstation?ref=badge_large)
